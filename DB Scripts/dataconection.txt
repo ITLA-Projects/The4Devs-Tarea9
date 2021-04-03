@@ -1,0 +1,5 @@
+Host: bnbrrzrnk96lt9i9njkr-mysql.services.clever-cloud.com
+Database Name: bnbrrzrnk96lt9i9njkr
+User: umb1v5nfyhasjarf
+Password: NvI04PbceAu7uCKFR5Wj
+Port: 3306
