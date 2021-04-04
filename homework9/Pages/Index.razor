@@ -1,7 +1,316 @@
-@page "/"
+﻿@page "/"
+@inject NavigationManager NavManager
 
-<h1>Hello, world!</h1>
+<h1>Solicitud de vacuna a domicilio</h1>
 
-Welcome to your new app.
+<h3>Ingresa tu cedula para comenzar</h3>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<div class="row">
+    <!--Busqueda cedula-->
+    <div class="col-12 align-items-center">
+        <label>Cedula: </label>
+        <input placeholder="00000000000" @bind-value="cedula" />
+        <button @onclick="buscarCedula" class="btn btn-outline-primary">Buscar</button>
+    </div>
+    <div class="col-12">
+        @if (alertaEstado)
+        {
+            <div class="alert @alertaTipo" role="alert">
+                @alertaMensaje
+            </div>
+        }
+    </div>
+    <div class="col-12">
+        @if (estado == "no_existe")
+        {
+            <form>
+                <div class="align-items-center">
+                    <label>Cedula: </label>
+                    <input @bind-value="applicants.Cedula" disabled />
+                </div>
+                <div class="align-items-center">
+                    <label>Nombres: </label>
+                    <input @bind-value="applicants.Name" disabled />
+                </div>
+                <div class="align-items-center">
+                    <label>Apellidos: </label>
+                    <input @bind-value="applicants.LastName" disabled />
+                </div>
+                <div class="align-items-center">
+                    <label>Fecha de Nacimiento: </label>
+                    <input @bind-value="applicants.BirthDate" disabled />
+                </div>
+                <div class="align-items-center">
+                    <label>Telefono: </label>
+                    <input @bind-value="applicants.Phone" />
+                </div>
+                <div class="align-items-center">
+                    <label>Email: </label>
+                    <input @bind-value="applicants.Email" />
+                </div>
+                <div class="align-items-center">
+                    <label>Provincia: </label>
+                    <select name="tipo_de_sangre">
+                        @foreach (Bloods bld in bloods)
+                        {
+                            <option @onclick="()=>setBlood(bld.Id)">@bld.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="align-items-center">
+                    <label>Provincia: </label>
+                    <select name="provincia">
+                        @foreach (Provinces prov in provinces)
+                        {
+                            <option @onclick="()=>setProvince(prov.Id)">@prov.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="align-items-center">
+                    <label>Direccion: </label>
+                    <input @bind-value="requests.Address" />
+                </div>
+                <div class="align-items-center">
+                    <label>Ha tenido covid?: </label>
+                    <select name="covid">
+                        <option @onclick="()=>tuvoCovid(false)">No</option>
+                        <option @onclick="()=>tuvoCovid(true)">Si</option>
+                    </select>
+                </div>
+                <div class="d-block">
+                    <label>Porque debemos vacunarlo en su casa?: </label>
+                    <textarea @bind="requests.WrittenRequest" @bind:event="oninput" />
+                </div>
+                <div>
+                    <label>Apunte en el mapa la direccion donde reside</label>
+                    <div>
+                        <RadzenGoogleMap style="height: 600px;" Zoom="9" Center="@center" MapClick="@OnMapClick">
+                            <Markers>
+                                @if (position != null)
+                                {
+                                    <RadzenGoogleMapMarker Title="Rep. Dom." Position="@(new GoogleMapPosition(){Lat = position.latitude,Lng=position.longitude})" />
+                                }
+                            </Markers>
+                        </RadzenGoogleMap>
+                    </div>
+                </div>
+                <div>
+                    <button @onclick="crearRegistro" @onclick:preventDefault="true" class="btn btn-outline-primary">Crear Solicitud</button>
+                </div>
+            </form>
+        }
+        else if (estado == "existe")
+        {
+            <div>
+                <h4>Esta persona ya se encuentra registrada, vea sus datos.</h4>
+                <div>
+                    <div class="card" style="width: 25rem;">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex">
+                                <span>Cedula:</span>
+                                <span>@applicants.Cedula</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Nombres:</span>
+                                <span>@applicants.Name</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Apellidos:</span>
+                                <span>@applicants.LastName</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Telefono:</span>
+                                <span>@applicants.Phone</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Email:</span>
+                                <span>@applicants.Email</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Fecha de Nacimiento:</span>
+                                <span>@applicants.BirthDate</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Tipo de sangre:</span>
+                                <span>@context.Bloods.Where(b => b.Id == applicants.BloodId).FirstOrDefault().Name</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Provincia:</span>
+                                <span>@context.Provinces.Where(p => p.Id == requests.ProvinceId).FirstOrDefault().Name</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Direccion:</span>
+                                <span>@requests.Address</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Latitud:</span>
+                                <span>@requests.Latitude</span>
+                            </li>
+                            <li class="list-group-item d-flex">
+                                <span>Longitud:</span>
+                                <span>@requests.Longitude</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code  {
+    //utilidades
+    bnbrrzrnk96lt9i9njkrContext context = new bnbrrzrnk96lt9i9njkrContext();
+    HttpClient client = new HttpClient();
+    GoogleMapPosition center = new GoogleMapPosition() { Lat = 18.99717148716791, Lng = -69.85096824795758 };
+
+    List<Bloods> bloods = new bnbrrzrnk96lt9i9njkrContext().Bloods.ToList();
+    List<Provinces> provinces = new bnbrrzrnk96lt9i9njkrContext().Provinces.ToList();
+    Position position = new Position();
+
+
+    //atributos anidados
+    string cedula = "";
+    //vacio - existe - no_existe
+    string estado = "";
+    //alertas
+    bool alertaEstado = false;
+    string alertaTipo = "alert-primary";
+    string alertaMensaje = "";
+
+    //valores nuevos a agregar
+    Applicants applicants = new Applicants();
+    Requests requests = new Requests();
+
+    async void buscarCedula()
+    {
+        limpiarAlerta();
+        estado = "";
+
+        var response = client.GetAsync("https://api.adamix.net/apec/cedula/" + cedula).Result;
+        if (response.IsSuccessStatusCode)
+        {
+            var customerJsonString = await response.Content.ReadAsStringAsync();
+            var d = JsonConvert.DeserializeObject<CedulaJson>(custome‌​rJsonString);
+
+            //buscar si existe una prueba con esta cedula
+            if (context.Applicants.Where(a => a.Cedula == d.Cedula).Any())
+            {
+                //llena todos los datos y da un aviso de que ya existe
+                applicants = context.Applicants.Where(a => a.Cedula == d.Cedula).FirstOrDefault();
+                requests = context.Requests.Where(r => r.Applicant.Cedula == d.Cedula).FirstOrDefault();
+
+                activarAlerta("warning", "Esta aplicante ya esta registrado.");
+
+                estado = "existe";
+            }
+            else
+            {
+                //da el aviso para crear uno nuevo
+
+
+                applicants.Name = d.Nombres;
+                applicants.LastName = d.Apellido1 + " " + d.Apellido2;
+                applicants.Cedula = d.Cedula;
+                applicants.BirthDate = d.FechaNacimiento;
+                applicants.Covid19Flag = false;
+                applicants.BloodId = context.Bloods.FirstOrDefault().Id;
+                requests.ProvinceId = context.Provinces.FirstOrDefault().Id;
+
+                activarAlerta("primary", "Registre al nuevo aplicante");
+                estado = "no_existe";
+            }
+        }
+        else
+        {
+            alertaEstado = true;
+            alertaTipo = "alert-danger";
+            alertaMensaje = "La cedula que buscas no existe";
+        }
+    }
+
+    void crearRegistro()
+    {
+        limpiarAlerta();
+
+        //chequeemos todo
+        //Telefono
+        if (applicants.Phone == null || applicants.Phone == "")
+        {
+            activarAlerta("danger", "Ingresa un numero telefonico");
+            return;
+        }
+
+        //Correo
+        if (applicants.Email == null || applicants.Email == "")
+        {
+            activarAlerta("danger", "Ingresa un correo electronico");
+            return;
+        }
+
+        //Direccion
+        if (requests.Address == null || requests.Address == "")
+        {
+            activarAlerta("danger", "Elige una direccion");
+            return;
+        }
+
+        //Latitud y longitud
+        if (position.latitude == 0 || position.longitude == 0)
+        {
+            activarAlerta("danger", "Elige un lugar en el mapa");
+            return;
+        }
+
+        //todo supeustamente bien, agrega
+        context.Applicants.Add(applicants);
+
+        context.SaveChanges();
+
+        requests.Latitude = (decimal)position.latitude;
+        requests.Longitude = (decimal) position.longitude;
+        requests.ApplicantId = context.Applicants.Where(a=>a.Cedula == applicants.Cedula).FirstOrDefault().Id;
+
+        context.Requests.Add(requests);
+
+        context.SaveChanges();
+
+        NavManager.NavigateTo("/gracias");
+    }
+
+    //METODOS EXTRA PARA AYUDAR
+
+    void OnMapClick(GoogleMapClickEventArgs args)
+    {
+        position = new Position() { latitude = args.Position.Lat, longitude = args.Position.Lng };
+    }
+
+    void setBlood(int id)
+    {
+        applicants.BloodId = id;
+    }
+
+    void setProvince(int id)
+    {
+        requests.ProvinceId = id;
+    }
+
+    void limpiarAlerta()
+    {
+        alertaEstado = false;
+        alertaTipo = "alert-primary";
+        alertaMensaje = "";
+    }
+
+    void activarAlerta(string tipo, string mensaje)
+    {
+        alertaEstado = true;
+        alertaTipo = "alert-" + tipo;
+        alertaMensaje = mensaje;
+    }
+
+    void tuvoCovid(bool b)
+    {
+        applicants.Covid19Flag = b;
+    }
+}

@@ -1,0 +1,18 @@
+﻿@page "/gracias"
+@inject NavigationManager NavManager
+
+<div class="d-flex flex-column justify-content-center align-items-center alert alert-success">
+    <h3>Gracias por llenar el formulario</h3>
+    <h5>Ha sido enviado a tu correo una confirmacion de envio.</h5>
+</div>
+<div class="text-center">
+    <button @onclick="volver" class="btn btn-outline-primary">Volver a aplicar</button>
+</div>
+
+
+@code {
+    void volver()
+    {
+        NavManager.NavigateTo("/");
+    }
+}

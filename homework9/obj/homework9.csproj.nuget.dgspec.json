@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/home/ronnyyoelperezcuevas/Documentos/The4Devs-Tarea9/homework9/homework9.csproj": {}
+    "D:\\salvamento\\ITLA 2021-C1\\Programacion III\\Tareas\\Tarea9\\homework9\\homework9.csproj": {}
   },
   "projects": {
-    "/home/ronnyyoelperezcuevas/Documentos/The4Devs-Tarea9/homework9/homework9.csproj": {
+    "D:\\salvamento\\ITLA 2021-C1\\Programacion III\\Tareas\\Tarea9\\homework9\\homework9.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/ronnyyoelperezcuevas/Documentos/The4Devs-Tarea9/homework9/homework9.csproj",
+        "projectUniqueName": "D:\\salvamento\\ITLA 2021-C1\\Programacion III\\Tareas\\Tarea9\\homework9\\homework9.csproj",
         "projectName": "homework9",
-        "projectPath": "/home/ronnyyoelperezcuevas/Documentos/The4Devs-Tarea9/homework9/homework9.csproj",
-        "packagesPath": "/home/ronnyyoelperezcuevas/.nuget/packages/",
-        "outputPath": "/home/ronnyyoelperezcuevas/Documentos/The4Devs-Tarea9/homework9/obj/",
+        "projectPath": "D:\\salvamento\\ITLA 2021-C1\\Programacion III\\Tareas\\Tarea9\\homework9\\homework9.csproj",
+        "packagesPath": "C:\\Users\\Miguel\\.nuget\\packages\\",
+        "outputPath": "D:\\salvamento\\ITLA 2021-C1\\Programacion III\\Tareas\\Tarea9\\homework9\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/ronnyyoelperezcuevas/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Miguel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,6 +39,50 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "BlazorGoogleMaps": {
+              "target": "Package",
+              "version": "[1.0.13, )"
+            },
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.0.78, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[3.1.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.12, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.23, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[3.2.4, )"
+            },
+            "Radzen.Blazor": {
+              "target": "Package",
+              "version": "[3.1.6, )"
+            },
+            "System.Text.RegularExpressions": {
+              "target": "Package",
+              "version": "[4.3.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -55,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/5.0.103/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }
