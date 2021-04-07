@@ -28,7 +28,6 @@ namespace homework9.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseMySql("server=bnbrrzrnk96lt9i9njkr-mysql.services.clever-cloud.com;uid=umb1v5nfyhasjarf;pwd=NvI04PbceAu7uCKFR5Wj;database=bnbrrzrnk96lt9i9njkr", x => x.ServerVersion("8.0.22-mysql"));
             }
         }

@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `Applicants` (
   `last_name` varchar(30) NOT NULL,
   `birth_date` date NOT NULL,
   `blood_id` int(11) DEFAULT NULL,
-  `request_flag` tinyint(1) DEFAULT 0,
+  `request_flag` tinyint(1) DEFAULT 1,
   `covid19_flag` tinyint(1) NOT NULL,
   PRIMARY KEY (`cedula`)
 );

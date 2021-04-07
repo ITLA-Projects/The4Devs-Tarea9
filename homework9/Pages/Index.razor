@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject NavigationManager NavManager
+@using System.Net.Mail;
 
 <h1>Solicitud de vacuna a domicilio</h1>
 
@@ -185,7 +186,7 @@
     async void buscarCedula()
     {
         limpiarAlerta();
-        estado = "";
+        estado = ""; 
 
         var response = client.GetAsync("https://api.adamix.net/apec/cedula/" + cedula).Result;
         if (response.IsSuccessStatusCode)
@@ -275,7 +276,9 @@
 
         context.SaveChanges();
 
-        NavManager.NavigateTo("/gracias");
+        enviarCorreo();
+
+        NavManager.NavigateTo("/gracias"); 
     }
 
     //METODOS EXTRA PARA AYUDAR
@@ -312,5 +315,34 @@
     void tuvoCovid(bool b)
     {
         applicants.Covid19Flag = b;
+    }
+
+    void enviarCorreo()
+    {
+        try
+        {
+            using (MailMessage mm = new MailMessage())
+            {
+                mm.From = new MailAddress("ronnyyoelperez@gmail.com");
+                mm.To.Add(applicants.Email);
+                mm.Subject = "Solicitud de Vacuna 2021";
+                mm.Body = "<h1>"+ applicants.Name + " " + applicants.LastName +"</h1>" + "<p>" + requests.WrittenRequest + "</p>" + "<hr> <p> No responda este correo </p>";
+                mm.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+
+                    smtp.Credentials = new System.Net.NetworkCredential("ronnyyoelperez@gmail.com", "yghwvjbafkydxwae");
+                    smtp.EnableSsl = true;
+                    smtp.Send(mm);
+                }
+
+            }
+        }
+        catch (System.Exception)
+        {
+            
+            throw;
+        }
     }
 }
